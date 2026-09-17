@@ -1,0 +1,153 @@
+/* UML-Editor: Oberfläche folgt dem VS-Code-Theme, Diagrammfarben über --uml-* */
+body {
+  --uml-bg: var(--vscode-editor-background, #ffffff);
+  --uml-fill: #ffffff;
+  --uml-notiz: #fff8c5;
+  --uml-rahmen: #f7f7f7;
+  --uml-stroke: #1e1e1e;
+  --uml-text: #1e1e1e;
+  --uml-raster: rgba(0, 0, 0, 0.08);
+  --uml-auswahl: var(--vscode-focusBorder, #007fd4);
+  --uml-auswahl-fill: rgba(0, 127, 212, 0.08);
+  --ui-rand: var(--vscode-panel-border, var(--vscode-widget-border, #ccc));
+  --ui-seite: var(--vscode-sideBar-background, var(--vscode-editor-background));
+}
+body.vscode-dark, body.vscode-high-contrast {
+  --uml-fill: #2a2d2e;
+  --uml-notiz: #4d4520;
+  --uml-rahmen: rgba(255, 255, 255, 0.04);
+  --uml-stroke: #d8d8d8;
+  --uml-text: #e8e8e8;
+  --uml-raster: rgba(255, 255, 255, 0.07);
+}
+body.vscode-high-contrast {
+  --uml-fill: #000;
+  --uml-stroke: #fff;
+  --uml-text: #fff;
+}
+
+html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
+body {
+  font-family: var(--vscode-font-family, 'Segoe UI', sans-serif);
+  font-size: var(--vscode-font-size, 13px);
+  color: var(--vscode-foreground);
+  background: var(--vscode-editor-background);
+  user-select: none;
+}
+#app { display: flex; flex-direction: column; height: 100%; }
+
+/* ---------- Werkzeugleiste ---------- */
+#werkzeuge {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  padding: 4px 6px; border-bottom: 1px solid var(--ui-rand); background: var(--ui-seite);
+}
+#werkzeuge .trenner { width: 1px; height: 22px; background: var(--ui-rand); margin: 0 4px; }
+button {
+  font: inherit; color: var(--vscode-button-secondaryForeground, var(--vscode-foreground));
+  background: var(--vscode-button-secondaryBackground, transparent);
+  border: 1px solid transparent; border-radius: 4px; padding: 4px 8px; min-height: 28px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+button:hover { background: var(--vscode-toolbar-hoverBackground, rgba(128,128,128,0.2)); }
+button:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: 1px; }
+button:disabled { opacity: 0.45; cursor: default; }
+button.aktiv { background: var(--vscode-button-background); color: var(--vscode-button-foreground); }
+button.primaer { background: var(--vscode-button-background); color: var(--vscode-button-foreground); }
+button.primaer:hover { background: var(--vscode-button-hoverBackground); }
+button.gefahr:hover { background: var(--vscode-inputValidation-errorBackground, #5a1d1d); }
+select, input[type=text], input[type=number], textarea {
+  font: inherit; color: var(--vscode-input-foreground); background: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border, var(--ui-rand)); border-radius: 3px; padding: 4px 6px; min-height: 26px;
+  box-sizing: border-box; width: 100%;
+}
+select { min-height: 28px; }
+textarea { resize: vertical; min-height: 60px; font-family: var(--vscode-editor-font-family, monospace); line-height: 1.4; }
+input:focus, select:focus, textarea:focus { outline: 1px solid var(--vscode-focusBorder); }
+label.umschalter { display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; min-height: 28px; cursor: pointer; }
+.hinweistext { opacity: 0.7; font-size: 12px; }
+#werkzeuge select { width: auto; min-width: 120px; max-width: 200px; }
+
+/* ---------- Mitte ---------- */
+#mitte { display: flex; flex: 1; min-height: 0; }
+#palette, #eigenschaften {
+  width: 200px; flex: none; overflow-y: auto; background: var(--ui-seite);
+  border-right: 1px solid var(--ui-rand);
+}
+#eigenschaften { width: 250px; border-right: none; border-left: 1px solid var(--ui-rand); padding: 8px 10px; box-sizing: border-box; }
+#palette[hidden], #eigenschaften[hidden] { display: none; }
+#palette details { border-bottom: 1px solid var(--ui-rand); }
+#palette summary {
+  padding: 6px 10px; cursor: pointer; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 6px;
+}
+#palette summary::before { content: '▸'; font-size: 11px; opacity: 0.7; }
+#palette details[open] summary::before { content: '▾'; }
+#palette summary:hover { background: var(--vscode-list-hoverBackground); }
+#palette .formen { display: flex; flex-direction: column; padding: 2px 4px 6px; }
+#palette button.form { width: 100%; justify-content: flex-start; padding: 3px 6px; min-height: 30px; border-radius: 3px; }
+#palette button.form svg { width: 30px; height: 22px; flex: none; }
+#palette button.form .taste {
+  margin-left: auto; font-size: 10px; opacity: 0.6; border: 1px solid currentColor; border-radius: 3px; padding: 0 4px;
+}
+#palette .kantenliste { padding: 2px 4px 8px; display: flex; flex-direction: column; }
+#palette .kantenliste button { width: 100%; justify-content: flex-start; min-height: 26px; padding: 2px 6px; }
+#palette .kantenliste button svg { width: 30px; height: 14px; flex: none; }
+#palette h3 { margin: 6px 10px 2px; font-size: 11px; text-transform: uppercase; opacity: 0.6; }
+
+#leinwandRahmen { flex: 1; min-width: 0; position: relative; overflow: hidden; background: var(--uml-bg); }
+#leinwand { width: 100%; height: 100%; display: block; touch-action: none; cursor: default; }
+#leinwand.verbinden { cursor: crosshair; }
+#leinwand.schieben { cursor: grabbing; }
+#leinwand .knoten { cursor: move; }
+#leinwand.verbinden .knoten { cursor: crosshair; }
+#leinwand .kante { cursor: pointer; }
+#leinwand .knoten.verbindungsquelle > :first-child { stroke: var(--uml-auswahl) !important; stroke-width: 3 !important; }
+#leinwand.verbinden .knoten:hover > :first-child { stroke: var(--uml-auswahl) !important; stroke-width: 3 !important; }
+#leinwand .kante.ausgewaehlt .kanten-linie { stroke: var(--uml-auswahl) !important; stroke-width: 3 !important; }
+#leinwand .kante.ausgewaehlt path:not(.kanten-treffer):not(.kanten-linie) { stroke: var(--uml-auswahl) !important; }
+#leinwand .auswahlrahmen { fill: var(--uml-auswahl-fill); stroke: var(--uml-auswahl); stroke-width: 1.5; stroke-dasharray: 5 3; pointer-events: none; }
+#leinwand .griff { fill: var(--uml-bg); stroke: var(--uml-auswahl); stroke-width: 1.5; cursor: nwse-resize; }
+#leinwand .gummiband { fill: var(--uml-auswahl-fill); stroke: var(--uml-auswahl); stroke-width: 1; stroke-dasharray: 4 3; }
+#leinwand .verbindungsvorschau { stroke: var(--uml-auswahl); stroke-width: 2; stroke-dasharray: 6 4; fill: none; pointer-events: none; }
+#leinwand .leerhinweis { fill: var(--uml-text); opacity: 0.5; font-size: 14px; pointer-events: none; }
+#leinwand text { pointer-events: none; }
+
+/* ---------- Eigenschaften ---------- */
+#eigenschaften h2 { font-size: 13px; margin: 0 0 8px; font-weight: 600; }
+#eigenschaften .feld { display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; }
+#eigenschaften .feld > span { font-size: 11px; opacity: 0.75; }
+#eigenschaften .zeile { display: flex; gap: 6px; }
+#eigenschaften .zeile > * { flex: 1; }
+#eigenschaften .knoepfe { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+#eigenschaften .knoepfe button { flex: 1 1 auto; justify-content: center; }
+#eigenschaften .farben { display: flex; flex-wrap: wrap; gap: 4px; }
+#eigenschaften .farben button { width: 26px; height: 26px; min-height: 26px; padding: 0; border: 1px solid var(--ui-rand); border-radius: 50%; justify-content: center; }
+#eigenschaften .farben button.aktiv { outline: 2px solid var(--vscode-focusBorder); }
+#eigenschaften .tipp { font-size: 11px; opacity: 0.7; margin: 8px 0; line-height: 1.4; }
+#eigenschaften .abstand { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--ui-rand); }
+
+/* ---------- Statuszeile ---------- */
+#status {
+  display: flex; align-items: center; gap: 12px; padding: 3px 10px; min-height: 22px;
+  border-top: 1px solid var(--ui-rand); background: var(--ui-seite); font-size: 12px;
+}
+#hinweis { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#status .wichtig { color: var(--vscode-button-background); font-weight: 600; }
+
+/* ---------- Hilfe ---------- */
+#hilfe {
+  position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex; align-items: center; justify-content: center; z-index: 10;
+}
+#hilfe[hidden] { display: none; }
+#hilfe .box {
+  background: var(--vscode-editorWidget-background, var(--ui-seite)); color: var(--vscode-foreground);
+  border: 1px solid var(--ui-rand); border-radius: 6px; padding: 16px 20px; max-width: 640px; max-height: 85%; overflow: auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3); user-select: text;
+}
+#hilfe h2 { margin-top: 0; }
+#hilfe h3 { margin: 12px 0 4px; font-size: 13px; }
+#hilfe table { border-collapse: collapse; width: 100%; }
+#hilfe td { padding: 2px 8px 2px 0; vertical-align: top; }
+#hilfe kbd {
+  font-family: inherit; font-size: 11px; border: 1px solid var(--ui-rand); border-radius: 3px; padding: 1px 5px;
+  background: var(--vscode-keybindingLabel-background, rgba(128,128,128,0.17));
+}

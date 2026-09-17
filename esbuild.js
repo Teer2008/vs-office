@@ -54,11 +54,26 @@ async function main() {
 		logLevel: 'silent',
 		plugins: [esbuildProblemMatcherPlugin],
 	});
+	// Webview des UML-Editors (Browser): eigener Code + Stylesheet nach media/uml/
+	const uml = await esbuild.context({
+		entryPoints: ['src/webview/uml/main.ts'],
+		bundle: true,
+		format: 'esm',
+		minify: production,
+		sourcemap: !production,
+		sourcesContent: false,
+		platform: 'browser',
+		outdir: 'media/uml',
+		entryNames: 'uml',
+		logLevel: 'silent',
+		plugins: [esbuildProblemMatcherPlugin],
+	});
+	const alle = [extension, webview, uml];
 	if (watch) {
-		await Promise.all([extension.watch(), webview.watch()]);
+		await Promise.all(alle.map(c => c.watch()));
 	} else {
-		await Promise.all([extension.rebuild(), webview.rebuild()]);
-		await Promise.all([extension.dispose(), webview.dispose()]);
+		await Promise.all(alle.map(c => c.rebuild()));
+		await Promise.all(alle.map(c => c.dispose()));
 	}
 }
 

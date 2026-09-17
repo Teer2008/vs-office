@@ -2,7 +2,7 @@
   "name": "vs-office",
   "displayName": "vs-office",
   "description": "Verwandle VS-Code zu deinem Büro",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.137.0"
   },
@@ -25,6 +25,11 @@
         "command": "vs-office.neueTabelle",
         "title": "Neue Tabelle (.xlsx)",
         "category": "Office"
+      },
+      {
+        "command": "vs-office.neuesDiagramm",
+        "title": "Neues UML-Diagramm (.uml)",
+        "category": "Office"
       }
     ],
     "customEditors": [
@@ -44,6 +49,23 @@
           {
             "filenamePattern": "*.xlsx"
           }
+        ]
+      },
+      {
+        "viewType": "office.umlEditor",
+        "displayName": "Office-UML-Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.uml"
+          }
+        ]
+      }
+    ],
+    "languages": [
+      {
+        "id": "json",
+        "extensions": [
+          ".uml"
         ]
       }
     ]

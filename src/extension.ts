@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import { PdfEditorProvider } from './pdfEditor';
 import { SheetEditorProvider, neueTabelle } from './sheetEditor';
+import { UmlEditorProvider, neuesDiagramm } from './umlEditor';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -30,6 +31,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(PdfEditorProvider.register(context));
 	context.subscriptions.push(SheetEditorProvider.register(context));
 	context.subscriptions.push(vscode.commands.registerCommand('vs-office.neueTabelle', neueTabelle));
+	context.subscriptions.push(UmlEditorProvider.register(context));
+	context.subscriptions.push(vscode.commands.registerCommand('vs-office.neuesDiagramm', neuesDiagramm));
 
 	context.subscriptions.push(disposable);
 }
